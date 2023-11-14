@@ -86,17 +86,64 @@ int main()
 
         case 'C':
         case 'c':
-            return 0;
+        counter = 0;
+            while (fgets(line, buffer_size, input)) {
+                // split up the line and store it in the right place
+                // using the & operator to pass in a pointer to the bloodIron so it stores it
+                tokeniseRecord(line, ",", daily_readings[counter].date, &daily_readings[counter].bloodIron);
+                counter++;
+            }
+
+            reading lowest_blood_reading = daily_readings[0];
+
+            for (int i = 0; i < counter; i++) {
+                if (daily_readings[i].bloodIron < lowest_blood_reading.bloodIron) {
+                    lowest_blood_reading = daily_readings[i];
+                }
+            }
+
+            printf("The lowest blood reading is %.2f on %s\n", lowest_blood_reading.bloodIron, lowest_blood_reading.date);
             break;
 
         case 'D':
         case 'd':
-            return 0;
+            counter = 0;
+            while (fgets(line, buffer_size, input)) {
+                // split up the line and store it in the right place
+                // using the & operator to pass in a pointer to the bloodIron so it stores it
+                tokeniseRecord(line, ",", daily_readings[counter].date, &daily_readings[counter].bloodIron);
+                counter++;
+            }
+
+            reading highest_blood_reading = daily_readings[0];
+
+            for (int i = 0; i < counter; i++) {
+                if (daily_readings[i].bloodIron > highest_blood_reading.bloodIron) {
+                    highest_blood_reading = daily_readings[i];
+                }
+            }
+
+            printf("The highest blood reading is %.2f on %s\n", highest_blood_reading.bloodIron, highest_blood_reading.date);
             break;
 
         case 'E':
         case 'e':
-            return 0;
+            
+            char inputMonth[3];
+            scanf("Enter a month: ", &inputMonth);
+
+            counter = 0;
+            while (fgets(line, buffer_size, input)) {
+                // split up the line and store it in the right place
+                // using the & operator to pass in a pointer to the bloodIron so it stores it
+                tokeniseRecord(line, ",", daily_readings[counter].date, &daily_readings[counter].bloodIron);
+                counter++;
+            }          
+
+            for (int i = 0; i < counter; i++) {
+
+            }
+
             break;
 
         case 'F':

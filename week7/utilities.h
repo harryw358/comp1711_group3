@@ -74,7 +74,15 @@ FILE *open_file(char *filename, char *mode)
  */
 int read_file(FILE *inputFile, reading *dataArray)
 {
-    // to do
+    char line[buffer_size];
+    char filename[buffer_size];
+    counter = 0;
+        while (fgets(line, buffer_size, inputFile))
+        {
+            counter++;
+        }
+
+    return counter;
 }
 
 /**
