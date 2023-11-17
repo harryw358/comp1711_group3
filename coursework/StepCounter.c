@@ -3,7 +3,9 @@
 #include <string.h>
 #include "FitnessDataStruct.h"
 
-FITNESS_DATA fitnessData[600];
+char date[11];
+char time[6];
+char steps[4];
 
 char getMenuChoice() {
     char choice;
@@ -22,69 +24,106 @@ char getMenuChoice() {
 }
 
 int main() {
-    // stores the filename of the csv file to be used
-    // opens the file in read mode, with error handling available
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        perror("Could not open CSV file.");
-        return 1;
-    }
 
     // declares a new array of type FITNESS_DATA
     FITNESS_DATA data[300];
-
-    // declares a bufferSize variable which is the max length of a csv record
-    // declares a lineCount variable which is responsible for keeping track of the number of csv records
-    int bufferSize = 100, lineCount = 0;
-    char lineBuffer[bufferSize];
-    while (fgets(lineBuffer, bufferSize, file) != NULL) {
-        tokeniseRecord(lineBuffer, ",", date, time, steps);
-
-        FITNESS_DATA newFitnessData;
-        strcpy(newFitnessData.date, date);
-        strcpy(newFitnessData.time, time);
-        newFitnessData.steps = atoi(steps);
-
-        data[lineCount] = newFitnessData;
-
-        lineCount++;  
-    }
-
-    // closes the csv file
-    fclose(file);
+    // declares a recordCount/lineCount variable which keeps track of the number of CSV records
+    int recordCount = 0;
 
     char choice = getMenuChoice();
 
-    switch (choice) {
-        case 'A':
-            printf("Input filename: ");
-            scanf("%s", &filename);
+    while (choice != 'Q' || choice != 'q') {
+        switch (choice) {
+            case 'A':
+            case 'a': {
 
-            // opens the file in read mode with error handling
-            FILE *file = fopen(filename, "r");
-            if (file == NULL) {
-                perror("Could not open file.");
-                break;
+                // retrieves the filename from the user
+                printf("Input filename: ");
+                fgets(line, bufferSize, stdin);
+                sscanf(line, " %s ", filename);
+
+                char filename[100];
+                printf("Input filename: ");
+                scanf("%s\n", filename);
+                
+
+                // opens the file in read mode, with error handling available
+                FILE *file = fopen(filename, "r");
+                if (file == NULL) {
+                    perror("Could not open CSV file.");
+                    break;
+                }
+
+                // declares a bufferSize variable whihc is the max length of a CSV record
+                int bufferSize = 100;
+                char lineBuffer[bufferSize];
+                while (fgets(lineBuffer, bufferSize, file) != NULL) {
+                    tokeniseRecord(lineBuffer, ",", date, time, steps);
+
+                    FITNESS_DATA newFitnessData;
+                    strcpy(newFitnessData.date, date);
+                    strcpy(newFitnessData.time, time);
+                    newFitnessData.steps = atoi(steps);
+
+                    data[recordCount] = newFitnessData;
+                    recordCount++;
+                }
+
+                // closes the CSV file
+                fclose(file);
+
+                choice = getMenuChoice();
             }
-        break;
-        case 'B':
+            break;
+            case 'B':
+            case 'b': {
+                printf("Total records: %d", recordCount);
 
-        break;
-        case 'C':
+                choice = getMenuChoice();
+            }
+            break;
+            case 'C':
+            case 'c': {
+                FITNESS_DATA fewestSteps = data[0];
+                for (int i = 0; i < recordCount; i++) {
+                    if (data[i].steps < fewestSteps.steps) {
+                        fewestSteps = data[i];
+                    }
+                }
 
-        break;
-        case 'D':
+                printf("Fewest steps: %s %s", fewestSteps.date, fewestSteps.time); 
 
-        break;
-        case 'E':
+                choice = getMenuChoice();
+            }
+            break;
+            case 'D':
+            case 'd': {
+                FITNESS_DATA largestSteps = data[0];
+                for (int i = 0; i < recordCount; i++) {
+                    if (data[i].steps > largestSteps.steps) {
+                        largestSteps = data[i];
+                    }
+                }
 
-        break;
-        case 'F':
+                printf("Largest steps: %s %s", largestSteps.date, largestSteps.time); 
 
-        break;
-        case 'Q':
+                choice = getMenuChoice();
+            }
+            break;
+            case 'E':
+            case 'e': {
+                int totalStepCount = 0;
+                for (int i = 0; i < recordCount; i++) {
+                    totalStepCount += data[i].steps;
+                }
 
-        break;
+                float meanStepCount = totalStepCount / recordCount;
+                printf("Mean step count:  %f", meanStepCount);
+
+                choice = getMenuChoice();
+            }
+            break;
+        }
     }
 
     return 0;
