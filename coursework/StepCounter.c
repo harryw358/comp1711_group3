@@ -15,7 +15,7 @@ char getMenuChoice() {
     printf("D. Find the date and time of timeslot with the largest number of steps\n");
     printf("E. Find the mean step count of all the records in the file\n");
     printf("F. Find the longest continuous period where the step count is above 500 steps\n");
-    printf("Q: Quit\n\n");
+    printf("Q. Quit\n\n");
     
     printf("Make a choice: ");
     char choice = 'X';
@@ -84,7 +84,7 @@ int main() {
             break;
             case 'B':
             case 'b': {
-                printf("Total records: %d\n", recordCount);
+                printf("Total records: %d\n\n", recordCount);
 
                 choice = getMenuChoice();
             }
