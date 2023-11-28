@@ -8,7 +8,6 @@ char time[6];
 char steps[4];
 
 char getMenuChoice() {
-    char choice;
 
     printf("A. Specify the filename to be imported\n");
     printf("B. Display the total number of records in the file\n");
@@ -17,7 +16,9 @@ char getMenuChoice() {
     printf("E. Find the mean step count of all the records in the file\n");
     printf("F. Find the longest continuous period where the step count is above 500 steps\n");
     printf("Q: Quit\n\n");
+    
     printf("Make a choice: ");
+    char choice = 'X';
     scanf("%c", &choice);
 
     return choice;
@@ -30,32 +31,32 @@ int main() {
     // declares a recordCount/lineCount variable which keeps track of the number of CSV records
     int recordCount = 0;
 
-    char choice = getMenuChoice();
+    char choice;
+    choice = getMenuChoice();
 
-    while (choice != 'Q' || choice != 'q') {
+    while (choice != 'Q' && choice != 'q') {
         switch (choice) {
             case 'A':
             case 'a': {
 
+                int bufferSize = 100;
+                char line[bufferSize];
+                char filename[bufferSize];
+
                 // retrieves the filename from the user
                 printf("Input filename: ");
-                fgets(line, bufferSize, stdin);
-                sscanf(line, " %s ", filename);
 
-                char filename[100];
-                printf("Input filename: ");
-                scanf("%s\n", filename);
-                
+                fgets(line, bufferSize, stdin);
+                sscanf(line, " %s ", filename);        
 
                 // opens the file in read mode, with error handling available
                 FILE *file = fopen(filename, "r");
                 if (file == NULL) {
-                    perror("Could not open CSV file.");
+                    perror("Could not open CSV file");
                     break;
                 }
 
-                // declares a bufferSize variable whihc is the max length of a CSV record
-                int bufferSize = 100;
+                // declares a bufferSize variable which is the max length of a CSV record
                 char lineBuffer[bufferSize];
                 while (fgets(lineBuffer, bufferSize, file) != NULL) {
                     tokeniseRecord(lineBuffer, ",", date, time, steps);
@@ -72,12 +73,18 @@ int main() {
                 // closes the CSV file
                 fclose(file);
 
+                for (int i = 0; i < recordCount; i++) {
+                    printf("%s\n", data[i].date);
+                    printf("%s\n", data[i].time);
+                    printf("%d\n\n", data[i].steps);
+                }
+
                 choice = getMenuChoice();
             }
             break;
             case 'B':
             case 'b': {
-                printf("Total records: %d", recordCount);
+                printf("Total records: %d\n", recordCount);
 
                 choice = getMenuChoice();
             }
@@ -91,7 +98,7 @@ int main() {
                     }
                 }
 
-                printf("Fewest steps: %s %s", fewestSteps.date, fewestSteps.time); 
+                printf("Fewest steps: %s %s\n", fewestSteps.date, fewestSteps.time); 
 
                 choice = getMenuChoice();
             }
