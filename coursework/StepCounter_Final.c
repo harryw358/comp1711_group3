@@ -55,7 +55,9 @@ char getMenuChoice() {
     
     printf("Make a choice: ");
     char choice = 'X';
-    scanf("%c", &choice);
+    scanf(" %c", &choice);
+
+    getchar();
 
     return choice;
 }
@@ -106,12 +108,6 @@ int main() {
                 // closes the CSV file
                 fclose(file);
 
-                for (int i = 0; i < recordCount; i++) {
-                    printf("%s\n", data[i].date);
-                    printf("%s\n", data[i].time);
-                    printf("%d\n\n", data[i].steps);
-                }
-
                 choice = getMenuChoice();
             }
             break;
@@ -159,6 +155,24 @@ int main() {
 
                 float meanStepCount = totalStepCount / recordCount;
                 printf("Mean step count:  %f", meanStepCount);
+
+                choice = getMenuChoice();
+            }
+            break;
+            case 'F':
+            case 'f': {
+                char startDate[11];
+                char startTime[6];
+                char endDate[11];
+                char endTime[6];
+
+
+
+                for (int i = 0; i < recordCount; i++) {
+                    if (data[i].steps >= 500) {
+                        
+                    }
+                }
 
                 choice = getMenuChoice();
             }
