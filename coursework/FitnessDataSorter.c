@@ -73,13 +73,16 @@ int main() {
     bool swapped = false;
     for (int i = 0; i < recordCount; i++) {
         swapped = false;
-        for (int j = 0; j < recordCount - i; j++) {
+        for (int j = 1; j < recordCount - i; j++) {
             if (data[j].steps > data[j - 1].steps) {
                 FitnessData temp = data[j];
                 data[j - 1] = data[j];
-                data[j] = temp;
+                data[i] = temp;
                 swapped = true;
             }
+        }
+        if (!swapped) {
+            break;
         }
     }
 

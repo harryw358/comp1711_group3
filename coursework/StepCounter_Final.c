@@ -88,7 +88,7 @@ int main() {
                 FILE *file = fopen(filename, "r");
                 if (file == NULL) {
                     perror("Could not open CSV file");
-                    break;
+                    return 1;
                 }
 
                 // declares a bufferSize variable which is the max length of a CSV record
@@ -141,7 +141,7 @@ int main() {
                     }
                 }
 
-                printf("Largest steps: %s %s", largestSteps.date, largestSteps.time); 
+                printf("Largest steps: %s %s\n", largestSteps.date, largestSteps.time); 
 
                 choice = getMenuChoice();
             }
@@ -154,7 +154,7 @@ int main() {
                 }
 
                 float meanStepCount = totalStepCount / recordCount;
-                printf("Mean step count:  %f", meanStepCount);
+                printf("Mean step count:  %.0f\n", meanStepCount);
 
                 choice = getMenuChoice();
             }
